@@ -1,0 +1,25 @@
+{
+  "name": "Roteiro Chile 2026",
+  "short_name": "Chile 2026",
+  "description": "Roteiro completo da viagem ao Chile — Julho 2026",
+  "start_url": "/roteiro-chile-2026.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#1a3a5c",
+  "theme_color": "#1a3a5c",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

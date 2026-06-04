@@ -2,8 +2,18 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Viagem ao Chile — Julho 2026</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json"/>
+  <meta name="theme-color" content="#1a3a5c"/>
+  <meta name="mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="Chile 2026"/>
+  <link rel="apple-touch-icon" href="icon-192.png"/>
+  <meta name="description" content="Roteiro completo da viagem ao Chile — Julho 2026"/>
   <style>
     :root {
       --azul:        #1a6fa8;
@@ -270,6 +280,98 @@
 
     .flight-detail { font-size: 10px; color: var(--subtexto); margin-top: 3px; line-height: 1.4; }
 
+    /* ══════════════════════════════════ TABELAS RESPONSIVAS */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+    /* ══════════════════════════════════ BANNER INSTALAR */
+    .install-banner {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      z-index: 999;
+      background: #1a3a5c;
+      color: white;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 -4px 16px rgba(0,0,0,.3);
+      animation: slideUp .3s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+    .install-banner .icon { font-size: 26px; flex-shrink: 0; }
+    .install-banner .text { flex: 1; }
+    .install-banner .text strong { display: block; font-size: 14px; }
+    .install-banner .text small  { font-size: 12px; opacity: .8; }
+    .install-banner .btn-install {
+      background: white; color: #1a3a5c;
+      border: none; border-radius: 8px;
+      padding: 8px 16px; font-size: 13px; font-weight: 700;
+      cursor: pointer; white-space: nowrap; flex-shrink: 0;
+    }
+    .install-banner .btn-close {
+      background: none; border: none; color: white;
+      font-size: 20px; cursor: pointer; padding: 4px; opacity: .7;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════ MOBILE */
+    @media (max-width: 600px) {
+      .page-header { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
+      .page-header h1 { font-size: 15px; }
+      .pax-badge { padding: 4px 8px; }
+      .pax-badge .nome { font-size: 11px; }
+
+      .container { padding: 16px 12px; }
+      .section { margin-bottom: 20px; }
+
+      /* Nav */
+      .sticky-nav { padding: 0 10px; gap: 2px; }
+      .nav-link { padding: 6px 9px; font-size: 12px; }
+      .nav-sep { display: none; }
+
+      /* Hotel grid → 1 coluna */
+      .hotel-grid { grid-template-columns: 1fr; }
+
+      /* Tour grid → 1 coluna */
+      .tour-grid { grid-template-columns: 1fr; }
+
+      /* Santiago grid → 1 coluna */
+      .card .grid-mobile-1 { grid-template-columns: 1fr !important; }
+
+      /* Resumo financeiro → 1 coluna */
+      .fin-summary { grid-template-columns: 1fr; }
+      .fin-sum-box { border-right: none; border-bottom: 1px solid var(--borda); }
+      .fin-sum-box:last-child { border-bottom: none; }
+      .fin-sum-box .amount { font-size: 18px; }
+
+      /* Tabela de voos — scroll horizontal */
+      .table-scroll table { min-width: 700px; }
+
+      /* Esconde coluna de assentos no mobile */
+      thead th:nth-child(7), tbody td:nth-child(7) { display: none; }
+
+      /* Financeito — scroll horizontal */
+      .fin-section .table-scroll table { min-width: 560px; }
+
+      /* Status bar */
+      .status-bar { flex-direction: column; align-items: flex-start; gap: 6px; }
+      .status-api-config { flex-direction: column; }
+      .status-api-config input { width: 100%; }
+
+      /* Hotel dates */
+      .hotel-date-box .value { font-size: 13px; }
+
+      /* Tour summary */
+      .tour-summary-right { flex-direction: column; align-items: flex-end; gap: 4px; }
+
+      /* Check items 2-col → 1 col */
+      .check-grid-2 { grid-template-columns: 1fr !important; }
+
+      /* Padding das seções */
+      .fin-header { padding: 14px 16px; }
+      .fin-table th, .fin-table td { padding: 8px 10px; font-size: 12px; }
+    }
+
     /* ══════════════════════════════════ FOOTER */
     .page-footer { text-align:center; padding:24px; color:var(--subtexto); font-size:12px; border-top:1px solid var(--borda); background:white; }
   </style>
@@ -295,6 +397,19 @@
       <div class="nome">Cecilia Corredato Garcia</div>
       <div class="doc">GI058147</div><div class="tipo">Criança · 11 anos</div>
     </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ BANNER INSTALAR -->
+<div id="installBanner" style="display:none">
+  <div class="install-banner">
+    <span class="icon">🇨🇱</span>
+    <div class="text">
+      <strong>Adicionar à Tela Inicial</strong>
+      <small id="installInstructions">Tenha o roteiro sempre à mão, mesmo sem internet</small>
+    </div>
+    <button class="btn-install" id="btnInstall">Instalar</button>
+    <button class="btn-close" id="btnCloseBanner" title="Fechar">✕</button>
   </div>
 </div>
 
@@ -335,6 +450,7 @@
     </div>
 
     <div class="card">
+      <div class="table-scroll">
       <table>
         <thead>
           <tr>
@@ -401,6 +517,7 @@
           </tr>
         </tbody>
       </table>
+      </div><!-- /table-scroll -->
     </div>
   </div>
 
@@ -625,7 +742,7 @@
   <div class="section" id="santiago">
     <div class="section-title">🏙️ Santiago — Roteiro a Planejar (05, 06 e 07/jul)</div>
     <div class="card card-body">
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+      <div class="check-grid-2" style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
         <div class="check-item todo">
           <span class="check-icon">⛷️</span>
           <div class="check-text">
@@ -732,7 +849,7 @@
         <h2>Resumo Financeiro — Viagem ao Chile · Julho 2026</h2>
         <p>3 passageiros · 10 noites · Santiago + Atacama</p>
       </div>
-      <table class="fin-table">
+      <div class="table-scroll"><table class="fin-table">
         <thead>
           <tr>
             <th>Item</th><th>Detalhe</th>
@@ -807,6 +924,7 @@
         </tbody>
       </table>
 
+      </div><!-- /table-scroll -->
       <div class="fin-summary">
         <div class="fin-sum-box pago">
           <div class="label">Já pago</div>
@@ -833,6 +951,82 @@
 <div class="page-footer">
   Roteiro gerado em junho de 2026 &nbsp;·&nbsp; Viagem: 04–14 de julho de 2026 &nbsp;·&nbsp; Santiago + San Pedro de Atacama, Chile
 </div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  PWA — Service Worker + Install Prompt
+// ════════════════════════════════════════════════════════════
+
+// Registra Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js')
+      .then(r => console.log('[SW] registrado:', r.scope))
+      .catch(e => console.warn('[SW] erro:', e));
+  });
+}
+
+// Detecta plataforma
+const isIOS        = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                     || window.navigator.standalone === true;
+const bannerShown  = localStorage.getItem('installBannerDismissed');
+
+let deferredPrompt = null;
+
+// Android/Chrome: captura evento de instalação
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!isStandalone && !bannerShown) showBanner('android');
+});
+
+// iOS: mostra banner com instruções manuais
+window.addEventListener('DOMContentLoaded', () => {
+  if (isIOS && !isStandalone && !bannerShown) {
+    setTimeout(() => showBanner('ios'), 1500);
+  }
+});
+
+function showBanner(platform) {
+  const banner = document.getElementById('installBanner');
+  const instructions = document.getElementById('installInstructions');
+  const btnInstall = document.getElementById('btnInstall');
+
+  if (platform === 'ios') {
+    instructions.textContent = 'Toque em  ↑  Compartilhar → "Adicionar à Tela Inicial"';
+    btnInstall.style.display = 'none';
+  } else {
+    instructions.textContent = 'Tenha o roteiro sempre à mão, mesmo sem internet';
+    btnInstall.style.display = '';
+  }
+
+  banner.style.display = 'block';
+}
+
+// Botão Instalar (Android)
+document.getElementById('btnInstall').addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  console.log('[PWA] install outcome:', outcome);
+  deferredPrompt = null;
+  document.getElementById('installBanner').style.display = 'none';
+});
+
+// Botão Fechar
+document.getElementById('btnCloseBanner').addEventListener('click', () => {
+  document.getElementById('installBanner').style.display = 'none';
+  localStorage.setItem('installBannerDismissed', '1');
+});
+
+// Oculta banner quando instalado
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installBanner').style.display = 'none';
+  console.log('[PWA] app instalado!');
+});
+
+</script>
 
 <script>
 // ════════════════════════════════════════════════════════════
