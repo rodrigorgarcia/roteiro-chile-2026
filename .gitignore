@@ -1,0 +1,12 @@
+# Documentos de viagem (privados)
+*.pdf
+
+# Configurações locais do Claude
+.claude/
+
+# Arquivos de texto temporários
+*.txt
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Viagem ao Chile — Julho 2026</title>
+  <style>
+    :root {
+      --azul:        #1a6fa8;
+      --azul-claro:  #e8f3fb;
+      --verde:       #1e7e4e;
+      --verde-claro: #e6f6ee;
+      --laranja:     #c2600a;
+      --laranja-claro:#fdf0e4;
+      --roxo:        #6b3fa0;
+      --roxo-claro:  #f2ecfb;
+      --cinza:       #f5f6f8;
+      --texto:       #1c1c1e;
+      --subtexto:    #555;
+      --borda:       #dde1e7;
+      --nav-h:       52px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #eef0f4;
+      color: var(--texto);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════ HEADER COMPACTO */
+    .page-header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #1a6fa8 100%);
+      color: white;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .page-header h1 { font-size: 18px; font-weight: 700; }
+    .page-header .subtitle { font-size: 12px; opacity: .75; margin-top: 2px; }
+    .passageiros { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pax-badge {
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.25);
+      border-radius: 6px;
+      padding: 5px 11px;
+    }
+    .pax-badge .nome { font-weight: 600; font-size: 12px; }
+    .pax-badge .doc  { font-size: 11px; opacity: .7; }
+    .pax-badge .tipo { font-size: 10px; opacity: .55; }
+
+    /* ══════════════════════════════════ NAV STICKY */
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #1a3a5c;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      padding: 0 28px;
+      gap: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .sticky-nav::-webkit-scrollbar { display: none; }
+    .nav-link {
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      padding: 6px 13px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: background .15s, color .15s;
+    }
+    .nav-link:hover { background: rgba(255,255,255,.15); color: white; }
+    .nav-sep { color: rgba(255,255,255,.25); padding: 0 2px; font-size: 12px; }
+
+    /* ══════════════════════════════════ LAYOUT */
+    .container { max-width: 1100px; margin: 0 auto; padding: 28px 20px; }
+    .section { margin-bottom: 28px; scroll-margin-top: calc(var(--nav-h) + 10px); }
+    .section-title {
+      font-size: 13px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .8px;
+      color: var(--subtexto); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-title::after { content:''; flex:1; height:1px; background:var(--borda); }
+
+    /* ══════════════════════════════════ CARD BASE */
+    .card { background:white; border-radius:12px; border:1px solid var(--borda); overflow:hidden; }
+    .card-body { padding: 16px 18px; }
+
+    /* ══════════════════════════════════ BADGE */
+    .badge { display:inline-block; padding:3px 9px; border-radius:20px; font-size:11px; font-weight:600; }
+    .badge-blue   { background:var(--azul-claro);     color:var(--azul);    }
+    .badge-green  { background:var(--verde-claro);    color:var(--verde);   }
+    .badge-orange { background:var(--laranja-claro);  color:var(--laranja); }
+    .badge-purple { background:var(--roxo-claro);     color:var(--roxo);    }
+    .badge-red    { background:#fdecea;               color:#c0392b;        }
+    .badge-gray   { background:#eee;                  color:#555;           }
+
+    /* ══════════════════════════════════ TABELA VOOS */
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    thead th {
+      background:var(--cinza); padding:9px 12px; text-align:left;
+      font-weight:600; font-size:12px; color:var(--subtexto);
+      border-bottom:1px solid var(--borda);
+    }
+    tbody td { padding:9px 12px; border-bottom:1px solid var(--borda); vertical-align:middle; }
+    tbody tr:last-child td { border-bottom:none; }
+    tbody tr:hover { background:#fafbfc; }
+    .voo-num { font-weight:700; font-family:monospace; font-size:13px; }
+    .hora-bold { font-weight:700; }
+    .rota-arrow { color:var(--subtexto); margin:0 6px; }
+
+    /* ══════════════════════════════════ HOTEL CARDS */
+    .hotel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    @media(max-width:800px){ .hotel-grid { grid-template-columns:1fr; } }
+    .hotel-card { background:white; border:1px solid var(--borda); border-radius:12px; overflow:hidden; }
+    .hotel-card-top { padding:14px 16px; border-bottom:1px solid var(--borda); }
+    .hotel-card-top h4 { font-size:14px; font-weight:700; margin-bottom:4px; }
+    .hotel-card-top .endereco { font-size:12px; color:var(--subtexto); }
+    .hotel-card-dates { display:flex; }
+    .hotel-date-box { flex:1; padding:10px 14px; text-align:center; border-right:1px solid var(--borda); }
+    .hotel-date-box:last-child { border-right:none; }
+    .hotel-date-box .label { font-size:10px; text-transform:uppercase; color:var(--subtexto); font-weight:600; }
+    .hotel-date-box .value { font-size:15px; font-weight:700; margin-top:2px; }
+    .hotel-date-box .hora  { font-size:11px; color:var(--subtexto); }
+    .hotel-card-info { padding:10px 16px; display:flex; flex-direction:column; gap:5px; font-size:12px; }
+    .hotel-info-row { display:flex; justify-content:space-between; gap:8px; }
+    .hotel-info-row .key { color:var(--subtexto); }
+    .hotel-info-row .val { font-weight:600; text-align:right; }
+    .hotel-card-footer { padding:10px 16px; background:var(--cinza); border-top:1px solid var(--borda); font-size:11px; color:var(--subtexto); }
+
+    /* ══════════════════════════════════ TOUR CARDS — COLAPSÁVEIS */
+    .tour-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media(max-width:700px){ .tour-grid { grid-template-columns:1fr; } }
+
+    .tour-card { background:white; border:1px solid var(--borda); border-radius:12px; overflow:hidden; }
+
+    details.tour-details { width:100%; }
+    details.tour-details summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+      transition: background .15s;
+    }
+    details.tour-details summary::-webkit-details-marker { display:none; }
+    details.tour-details summary:hover { background: #fafbfc; }
+    details.tour-details[open] summary { border-bottom: 1px solid var(--borda); background: var(--laranja-claro); }
+
+    .tour-summary-left { display:flex; align-items:center; gap:10px; flex:1; }
+    .tour-icon { font-size:22px; }
+    .tour-summary-title h4 { font-size:14px; font-weight:700; }
+    .tour-summary-title .tour-tags { display:flex; gap:6px; margin-top:4px; flex-wrap:wrap; }
+
+    .tour-summary-right { display:flex; align-items:center; gap:14px; }
+    .tour-summary-price { text-align:right; }
+    .tour-summary-price .clp { font-size:14px; font-weight:700; color:var(--laranja); }
+    .tour-summary-price .brl { font-size:11px; color:var(--subtexto); }
+
+    .tour-chevron {
+      font-size:14px; color:var(--subtexto);
+      transition: transform .2s;
+    }
+    details.tour-details[open] .tour-chevron { transform: rotate(180deg); }
+
+    .tour-body { padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+    .tour-row { display:flex; gap:8px; font-size:13px; }
+    .tour-row .k { color:var(--subtexto); min-width:90px; font-size:12px; }
+    .tour-row .v { flex:1; }
+    .tour-divider { border:none; border-top:1px solid var(--borda); margin:4px 0; }
+    .tour-body-note {
+      font-size:12px; padding:8px 10px;
+      background:#fffbea; border:1px solid #f0e080; border-radius:6px;
+    }
+
+    /* ══════════════════════════════════ CHECKLIST */
+    .check-list { display:flex; flex-direction:column; gap:8px; }
+    .check-item { display:flex; align-items:flex-start; gap:10px; padding:10px 14px; border-radius:8px; font-size:13px; border:1px solid var(--borda); background:white; }
+    .check-item.done { background:var(--verde-claro);  border-color:#b2dcc7; }
+    .check-item.todo { background:#fffbea;             border-color:#f0e080; }
+    .check-item.info { background:var(--azul-claro);   border-color:#b3d4ef; }
+    .check-icon { font-size:16px; margin-top:1px; }
+    .check-text strong { display:block; margin-bottom:1px; }
+    .check-text small  { color:var(--subtexto); }
+
+    /* ══════════════════════════════════ ALERTA */
+    .alerta { display:flex; gap:10px; padding:12px 14px; border-radius:8px; font-size:13px; margin-top:8px; }
+    .alerta.amarelo { background:#fffbea; border:1px solid #f0e080; }
+    .alerta.azul    { background:var(--azul-claro); border:1px solid #b3d4ef; }
+
+    /* ══════════════════════════════════ FINANCEIRO */
+    .fin-section { background:white; border:1px solid var(--borda); border-radius:12px; overflow:hidden; }
+    .fin-header { background:linear-gradient(135deg,#3b1f6e,#6b3fa0); color:white; padding:18px 22px; }
+    .fin-header h2 { font-size:16px; font-weight:700; }
+    .fin-header p  { opacity:.8; font-size:13px; margin-top:3px; }
+    .fin-table { width:100%; border-collapse:collapse; font-size:13px; }
+    .fin-table th { background:var(--cinza); padding:10px 16px; text-align:left; font-weight:600; font-size:12px; color:var(--subtexto); border-bottom:1px solid var(--borda); }
+    .fin-table td { padding:10px 16px; border-bottom:1px solid var(--borda); }
+    .fin-table tr:last-child td { border-bottom:none; }
+    .fin-table .valor { text-align:right; font-weight:600; }
+    .fin-table .pago   { color:var(--verde); }
+    .fin-table .apagar { color:var(--laranja); }
+    .fin-table .total-row td { background:var(--roxo-claro); font-weight:700; font-size:14px; border-top:2px solid #c8a8f0; }
+    .fin-table .subtotal-row td { background:var(--cinza); font-weight:600; }
+    .fin-group-label td { background:#f0ecfa; color:var(--roxo); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.6px; padding:6px 16px; }
+    .fin-summary { display:grid; grid-template-columns:repeat(3,1fr); border-top:2px solid var(--borda); }
+    @media(max-width:600px){ .fin-summary { grid-template-columns:1fr; } }
+    .fin-sum-box { padding:18px 20px; text-align:center; border-right:1px solid var(--borda); }
+    .fin-sum-box:last-child { border-right:none; }
+    .fin-sum-box .label  { font-size:11px; text-transform:uppercase; color:var(--subtexto); font-weight:600; }
+    .fin-sum-box .amount { font-size:22px; font-weight:800; margin-top:4px; }
+    .fin-sum-box.pago   .amount { color:var(--verde); }
+    .fin-sum-box.apagar .amount { color:var(--laranja); }
+    .fin-sum-box.total  .amount { color:var(--roxo); }
+
+    /* ══════════════════════════════════ STATUS DE VOO */
+    .status-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px; flex-wrap: wrap; gap: 8px;
+    }
+    .btn-refresh {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--azul); color: white; border: none;
+      padding: 7px 14px; border-radius: 8px; font-size: 12px;
+      font-weight: 600; cursor: pointer; transition: background .15s;
+    }
+    .btn-refresh:hover { background: #155d8e; }
+    .btn-refresh:disabled { background: #aaa; cursor: not-allowed; }
+    .btn-refresh .spin { display: inline-block; }
+    .btn-refresh.loading .spin { animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .status-updated { font-size: 11px; color: var(--subtexto); }
+
+    .status-api-config {
+      background: #fffbea; border: 1px solid #f0e080;
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 12px; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .status-api-config label { font-weight: 600; white-space: nowrap; }
+    .status-api-config input {
+      flex: 1; min-width: 220px; padding: 5px 9px;
+      border: 1px solid var(--borda); border-radius: 6px;
+      font-size: 12px; font-family: monospace;
+    }
+    .status-api-config a { color: var(--azul); font-size: 11px; white-space: nowrap; }
+
+    .badge-status-ok       { background: #e6f6ee; color: #1e7e4e; }
+    .badge-status-active   { background: #e8f3fb; color: #1a6fa8; }
+    .badge-status-delay    { background: #fdf0e4; color: #c2600a; }
+    .badge-status-cancel   { background: #fdecea; color: #c0392b; }
+    .badge-status-default  { background: #eee;    color: #666;    }
+    .badge-status-error    { background: #fdecea; color: #c0392b; }
+
+    .flight-detail { font-size: 10px; color: var(--subtexto); margin-top: 3px; line-height: 1.4; }
+
+    /* ══════════════════════════════════ FOOTER */
+    .page-footer { text-align:center; padding:24px; color:var(--subtexto); font-size:12px; border-top:1px solid var(--borda); background:white; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════ HEADER COMPACTO -->
+<div class="page-header">
+  <div>
+    <h1>🇨🇱 Viagem ao Chile — Julho 2026</h1>
+    <div class="subtitle">04 → 14 de julho &nbsp;·&nbsp; 10 noites &nbsp;·&nbsp; Santiago + Atacama</div>
+  </div>
+  <div class="passageiros">
+    <div class="pax-badge">
+      <div class="nome">Rodrigo Ramos Garcia</div>
+      <div class="doc">GM584170</div><div class="tipo">Adulto</div>
+    </div>
+    <div class="pax-badge">
+      <div class="nome">Vanessa Duarte Corredato</div>
+      <div class="doc">GM309814</div><div class="tipo">Adulto</div>
+    </div>
+    <div class="pax-badge">
+      <div class="nome">Cecilia Corredato Garcia</div>
+      <div class="doc">GI058147</div><div class="tipo">Criança · 11 anos</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ NAV STICKY -->
+<nav class="sticky-nav">
+  <a class="nav-link" href="#voos">✈️ Voos</a>
+  <span class="nav-sep">·</span>
+  <a class="nav-link" href="#hospedagem">🏨 Hospedagem</a>
+  <span class="nav-sep">·</span>
+  <a class="nav-link" href="#passeios">🏜️ Passeios Atacama</a>
+  <span class="nav-sep">·</span>
+  <a class="nav-link" href="#santiago">🏙️ Santiago</a>
+  <span class="nav-sep">·</span>
+  <a class="nav-link" href="#checklist">✅ Checklist</a>
+  <span class="nav-sep">·</span>
+  <a class="nav-link" href="#financeiro">💜 Financeiro</a>
+</nav>
+
+<div class="container">
+
+  <!-- ════════════════════════════════════════════ VOOS -->
+  <div class="section" id="voos">
+    <div class="section-title">✈️ Voos</div>
+
+    <!-- Config API -->
+    <div class="status-api-config">
+      <label>🔑 RapidAPI Key:</label>
+      <input type="text" id="apiKeyInput" placeholder="Cole sua chave RapidAPI aqui" />
+      <a href="https://rapidapi.com/aedbx-aedbx/api/aerodatabox" target="_blank">→ Criar conta grátis no RapidAPI (500 req/mês)</a>
+    </div>
+
+    <!-- Barra de ação -->
+    <div class="status-bar">
+      <span class="status-updated" id="statusUpdated">Status não carregado</span>
+      <button class="btn-refresh" id="btnRefresh" onclick="fetchAllStatus()">
+        <span class="spin">🔄</span> Atualizar Status
+      </button>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Voo</th><th>Data</th><th>Rota</th>
+            <th>Saída</th><th>Chegada</th>
+            <th>Cia / Reserva</th><th>Assentos</th>
+            <th style="text-align:center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="voo-num">LA 8140</span></td>
+            <td>04/jul · Sáb</td>
+            <td>São Paulo (GRU) <span class="rota-arrow">→</span> Buenos Aires (AEP)</td>
+            <td class="hora-bold">09:05</td><td class="hora-bold">12:00</td>
+            <td><span class="badge badge-blue">LATAM</span> DFZZBN</td>
+            <td>16A · 16B · 16C</td>
+            <td style="text-align:center" id="s-LA8140"><span class="badge badge-status-default">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="voo-num">LA 454</span></td>
+            <td>04/jul · Sáb</td>
+            <td>Buenos Aires (AEP) <span class="rota-arrow">→</span> Santiago (SCL)</td>
+            <td class="hora-bold">15:45</td><td class="hora-bold">17:08</td>
+            <td><span class="badge badge-blue">LATAM</span> DFZZBN</td>
+            <td>16A · 16B · 16C</td>
+            <td style="text-align:center" id="s-LA454"><span class="badge badge-status-default">—</span></td>
+          </tr>
+          <tr style="background:#fffef5">
+            <td><span class="voo-num">JA 36</span></td>
+            <td>08/jul · Qua</td>
+            <td>Santiago (SCL) <span class="rota-arrow">→</span> Calama (CJC)</td>
+            <td class="hora-bold">09:10</td><td class="hora-bold">11:20</td>
+            <td><span class="badge badge-orange">JetSMART</span> E689JC</td>
+            <td>—</td>
+            <td style="text-align:center" id="s-JA36"><span class="badge badge-status-default">—</span></td>
+          </tr>
+          <tr style="background:#fffef5">
+            <td><span class="voo-num">JA 31</span></td>
+            <td>13/jul · Seg</td>
+            <td>Calama (CJC) <span class="rota-arrow">→</span> Santiago (SCL)</td>
+            <td class="hora-bold">12:41</td><td class="hora-bold">14:48</td>
+            <td><span class="badge badge-orange">JetSMART</span> E689JC</td>
+            <td>—</td>
+            <td style="text-align:center" id="s-JA31"><span class="badge badge-status-default">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="voo-num">LA 516</span></td>
+            <td>14/jul · Ter</td>
+            <td>Santiago (SCL) <span class="rota-arrow">→</span> Florianópolis (FLN)</td>
+            <td class="hora-bold">13:40</td><td class="hora-bold">18:05</td>
+            <td><span class="badge badge-blue">LATAM</span> DFZZBN</td>
+            <td>16A · 16B · 16C</td>
+            <td style="text-align:center" id="s-LA516"><span class="badge badge-status-default">—</span></td>
+          </tr>
+          <tr>
+            <td><span class="voo-num">LA 3307</span></td>
+            <td>14/jul · Ter</td>
+            <td>Florianópolis (FLN) <span class="rota-arrow">→</span> São Paulo (GRU)</td>
+            <td class="hora-bold">20:25</td><td class="hora-bold">21:55</td>
+            <td><span class="badge badge-blue">LATAM</span> DFZZBN</td>
+            <td>16A · 16B · 16C</td>
+            <td style="text-align:center" id="s-LA3307"><span class="badge badge-status-default">—</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ HOSPEDAGEM -->
+  <div class="section" id="hospedagem">
+    <div class="section-title">🏨 Hospedagem</div>
+    <div class="hotel-grid">
+
+      <div class="hotel-card">
+        <div class="hotel-card-top">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div><h4>Airbnb Providencia</h4><div class="endereco">Av. Nueva Providencia 1372 · Santiago</div></div>
+            <span class="badge badge-blue">Santiago</span>
+          </div>
+        </div>
+        <div class="hotel-card-dates">
+          <div class="hotel-date-box"><div class="label">Check-in</div><div class="value">04/jul</div><div class="hora">a partir das 15:00</div></div>
+          <div class="hotel-date-box"><div class="label">Check-out</div><div class="value">08/jul</div><div class="hora">até as 12:00</div></div>
+          <div class="hotel-date-box"><div class="label">Diárias</div><div class="value">4</div><div class="hora">&nbsp;</div></div>
+        </div>
+        <div class="hotel-card-info">
+          <div class="hotel-info-row"><span class="key">Confirmação</span><span class="val">HMFKQ3AXTF</span></div>
+          <div class="hotel-info-row"><span class="key">Anfitrião Juan</span><span class="val">+56 9 5000 4212</span></div>
+          <div class="hotel-info-row"><span class="key">Café da manhã</span><span class="val">Não incluso</span></div>
+          <div class="hotel-info-row"><span class="key">Valor</span><span class="val">R$ 1.767</span></div>
+        </div>
+        <div class="hotel-card-footer">⚠️ Combinar saída às 06:30 do dia 08/jul com o anfitrião — voo às 09:10</div>
+      </div>
+
+      <div class="hotel-card">
+        <div class="hotel-card-top">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div><h4>Nueva Lodge La Estación</h4><div class="endereco">405 Ignacio Carrera Pinto · San Pedro de Atacama</div></div>
+            <span class="badge badge-orange">Atacama</span>
+          </div>
+        </div>
+        <div class="hotel-card-dates">
+          <div class="hotel-date-box"><div class="label">Check-in</div><div class="value">08/jul</div><div class="hora">a partir das 15:00</div></div>
+          <div class="hotel-date-box"><div class="label">Check-out</div><div class="value">13/jul</div><div class="hora">até as 12:00</div></div>
+          <div class="hotel-date-box"><div class="label">Diárias</div><div class="value">5</div><div class="hora">&nbsp;</div></div>
+        </div>
+        <div class="hotel-card-info">
+          <div class="hotel-info-row"><span class="key">Confirmação</span><span class="val">5791.598.308</span></div>
+          <div class="hotel-info-row"><span class="key">PIN</span><span class="val">2115</span></div>
+          <div class="hotel-info-row"><span class="key">Telefone</span><span class="val">+56 9 8360 4496</span></div>
+          <div class="hotel-info-row"><span class="key">Café da manhã</span><span class="val" style="color:var(--verde)">✓ Incluso</span></div>
+          <div class="hotel-info-row"><span class="key">Cancelamento grátis</span><span class="val">até 06/jul 23:59</span></div>
+          <div class="hotel-info-row"><span class="key">Pagamento</span><span class="val" style="color:var(--laranja)">USD no check-in</span></div>
+          <div class="hotel-info-row"><span class="key">Valor</span><span class="val">US$ 977,50 (~R$ 5.884)</span></div>
+        </div>
+        <div class="hotel-card-footer">💡 Pagar em USD + passaporte + Tarjeta de Turismo = isenção ISS 19%</div>
+      </div>
+
+      <div class="hotel-card">
+        <div class="hotel-card-top">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div><h4>Courtyard by Marriott Airport</h4><div class="endereco">Blvd. Aeropuerto Sur 9648 · Pudahuel · Santiago</div></div>
+            <span class="badge badge-blue">Santiago</span>
+          </div>
+        </div>
+        <div class="hotel-card-dates">
+          <div class="hotel-date-box"><div class="label">Check-in</div><div class="value">13/jul</div><div class="hora">a partir das 15:00</div></div>
+          <div class="hotel-date-box"><div class="label">Check-out</div><div class="value">14/jul</div><div class="hora">até as 12:00</div></div>
+          <div class="hotel-date-box"><div class="label">Diárias</div><div class="value">1</div><div class="hora">&nbsp;</div></div>
+        </div>
+        <div class="hotel-card-info">
+          <div class="hotel-info-row"><span class="key">Confirmação</span><span class="val">5915.964.554</span></div>
+          <div class="hotel-info-row"><span class="key">PIN</span><span class="val">2828</span></div>
+          <div class="hotel-info-row"><span class="key">Telefone</span><span class="val">+56 2 2392 6400</span></div>
+          <div class="hotel-info-row"><span class="key">Café da manhã</span><span class="val" style="color:var(--verde)">✓ Incluso</span></div>
+          <div class="hotel-info-row"><span class="key">Cancelamento</span><span class="val" style="color:#c0392b">Não reembolsável</span></div>
+          <div class="hotel-info-row"><span class="key">Valor</span><span class="val">R$ 522</span></div>
+        </div>
+        <div class="hotel-card-footer">🚌 Shuttle aeroporto: porta 3, 3º andar, a cada 1h15 · +56 94 265 2424</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ PASSEIOS ATACAMA -->
+  <div class="section" id="passeios">
+    <div class="section-title">🏜️ Passeios — Atacama · Araya Atacama #134756</div>
+    <div class="alerta amarelo" style="margin-bottom:14px">
+      <span>⚠️</span>
+      <span>Datas de cada passeio ainda são <strong>provisórias</strong> — a definir com a agência. Sinal de 30% já pago (R$ 2.243). Saldo de 70% (R$ 5.232) a pagar na chegada.</span>
+    </div>
+    <div class="tour-grid">
+
+      <!-- ASTRONÔMICO -->
+      <div class="tour-card">
+        <details class="tour-details">
+          <summary>
+            <div class="tour-summary-left">
+              <span class="tour-icon">🔭</span>
+              <div class="tour-summary-title">
+                <h4>Experiência Astronômica</h4>
+                <div class="tour-tags">
+                  <span class="badge badge-gray">Noturno · ~4h</span>
+                  <span class="badge badge-green">Baixo impacto</span>
+                </div>
+              </div>
+            </div>
+            <div class="tour-summary-right">
+              <div class="tour-summary-price">
+                <div class="clp">CLP $273.000</div>
+                <div class="brl">≈ R$ 1.542</div>
+              </div>
+              <span class="tour-chevron">▼</span>
+            </div>
+          </summary>
+          <div class="tour-body">
+            <div class="tour-row"><span class="k">Altitude</span><span class="v">2.400 m</span></div>
+            <div class="tour-row"><span class="k">Nível físico</span><span class="v">Baixo</span></div>
+            <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, astrônomo certificado, telescópio, sessão fotográfica profissional</span></div>
+            <div class="tour-row"><span class="k">Refeição</span><span class="v">Jantar completo + vinho chileno + chocolate + bebidas quentes</span></div>
+            <hr class="tour-divider"/>
+            <div class="tour-body-note">⚠️ Não opera em lua cheia &nbsp;·&nbsp; Sujeito ao clima</div>
+          </div>
+        </details>
+      </div>
+
+      <!-- GEYSERS -->
+      <div class="tour-card">
+        <details class="tour-details">
+          <summary>
+            <div class="tour-summary-left">
+              <span class="tour-icon">🌋</span>
+              <div class="tour-summary-title">
+                <h4>Geysers El Tatio</h4>
+                <div class="tour-tags">
+                  <span class="badge badge-orange">Pickup 05:00 · ~7h</span>
+                  <span class="badge badge-gray">4.300 m</span>
+                </div>
+              </div>
+            </div>
+            <div class="tour-summary-right">
+              <div class="tour-summary-price">
+                <div class="clp">CLP $210.000</div>
+                <div class="brl">≈ R$ 1.186</div>
+              </div>
+              <span class="tour-chevron">▼</span>
+            </div>
+          </summary>
+          <div class="tour-body">
+            <div class="tour-row"><span class="k">Nível físico</span><span class="v">Moderado</span></div>
+            <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, guia bilíngue, entrada no parque</span></div>
+            <div class="tour-row"><span class="k">Refeição</span><span class="v">Café quente: ovos, panquecas, queijo, pão, café</span></div>
+            <div class="tour-row"><span class="k">Restrição</span><span class="v">Crianças 0–8 anos · gestantes · cardíacos / respiratórios</span></div>
+            <hr class="tour-divider"/>
+            <div class="tour-body-note">✅ Cecilia (11 anos) pode participar normalmente</div>
+          </div>
+        </details>
+      </div>
+
+      <!-- LAGOS -->
+      <div class="tour-card">
+        <details class="tour-details">
+          <summary>
+            <div class="tour-summary-left">
+              <span class="tour-icon">🏔️</span>
+              <div class="tour-summary-title">
+                <h4>Lagos de Altitude + Pedras Vermelhas</h4>
+                <div class="tour-tags">
+                  <span class="badge badge-orange">Pickup 06:00 · ~10h</span>
+                  <span class="badge badge-gray">4.200 m</span>
+                </div>
+              </div>
+            </div>
+            <div class="tour-summary-right">
+              <div class="tour-summary-price">
+                <div class="clp">CLP $420.000</div>
+                <div class="brl">≈ R$ 2.373</div>
+              </div>
+              <span class="tour-chevron">▼</span>
+            </div>
+          </summary>
+          <div class="tour-body">
+            <div class="tour-row"><span class="k">Nível físico</span><span class="v">Moderado (caminhadas curtas)</span></div>
+            <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, guia bilíngue, entradas nos parques</span></div>
+            <div class="tour-row"><span class="k">Refeição</span><span class="v">Café da manhã + almoço em propriedade familiar com vista para as montanhas</span></div>
+          </div>
+        </details>
+      </div>
+
+      <!-- LAGUNA -->
+      <div class="tour-card">
+        <details class="tour-details">
+          <summary>
+            <div class="tour-summary-left">
+              <span class="tour-icon">🦩</span>
+              <div class="tour-summary-title">
+                <h4>Laguna Lejía</h4>
+                <div class="tour-tags">
+                  <span class="badge badge-orange">Pickup 06:30 · ~8h</span>
+                  <span class="badge badge-green">Baixo impacto</span>
+                </div>
+              </div>
+            </div>
+            <div class="tour-summary-right">
+              <div class="tour-summary-price">
+                <div class="clp">CLP $420.000</div>
+                <div class="brl">≈ R$ 2.373</div>
+              </div>
+              <span class="tour-chevron">▼</span>
+            </div>
+          </summary>
+          <div class="tour-body">
+            <div class="tour-row"><span class="k">Altitude</span><span class="v">~4.500 m</span></div>
+            <div class="tour-row"><span class="k">Nível físico</span><span class="v">Baixo (contemplativo)</span></div>
+            <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, guia bilíngue experiente</span></div>
+            <div class="tour-row"><span class="k">Refeição</span><span class="v">Café da manhã + almoço com massa fresca ao pesto e parmesão</span></div>
+            <hr class="tour-divider"/>
+            <div class="tour-body-note">⚠️ Estrada não pavimentada &nbsp;·&nbsp; Sensível à atividade vulcânica</div>
+          </div>
+        </details>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ SANTIAGO -->
+  <div class="section" id="santiago">
+    <div class="section-title">🏙️ Santiago — Roteiro a Planejar (05, 06 e 07/jul)</div>
+    <div class="card card-body">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px">
+        <div class="check-item todo">
+          <span class="check-icon">⛷️</span>
+          <div class="check-text">
+            <strong>Farellones (neve)</strong>
+            <small>Dia inteiro · reservar transporte com antecedência · Temporada Alta + Férias de Inverno (06–19/jul)</small>
+          </div>
+        </div>
+        <div class="check-item todo">
+          <span class="check-icon">⛰️</span>
+          <div class="check-text">
+            <strong>Cerro San Cristóbal</strong>
+            <small>Meio dia · Funicular + Zoológico + Teleférico · ótimo para crianças</small>
+          </div>
+        </div>
+        <div class="check-item todo">
+          <span class="check-icon">🍷</span>
+          <div class="check-text">
+            <strong>Concha y Toro</strong>
+            <small>Meio dia · Valle do Maipo · ~40min do centro</small>
+          </div>
+        </div>
+        <div class="check-item todo">
+          <span class="check-icon">🗺️</span>
+          <div class="check-text">
+            <strong>City Tour Santiago</strong>
+            <small>Meio dia · Lastarria · Mercado Central · centro histórico</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════ CHECKLIST -->
+  <div class="section" id="checklist">
+    <div class="section-title">✅ Checklist</div>
+    <div class="check-list">
+      <div class="check-item done">
+        <span class="check-icon">✅</span>
+        <div class="check-text">
+          <strong>Checkout antecipado combinado com Juan (Airbnb)</strong>
+          <small>Saída às ~06:30 do dia 08/jul para o voo JA 36 às 09:10</small>
+        </div>
+      </div>
+      <div class="check-item done">
+        <span class="check-icon">✅</span>
+        <div class="check-text">
+          <strong>Shuttle Marriott reservado</strong>
+          <small>Chegada 13/jul ~16h · porta 3, 3º andar · +56 94 265 2424</small>
+        </div>
+      </div>
+      <div class="check-item done">
+        <span class="check-icon">✅</span>
+        <div class="check-text">
+          <strong>Sinal de 30% pago — Passeios Araya Atacama</strong>
+          <small>CLP $396.900 · câmbio R$1 = CLP$177 · R$ 2.243</small>
+        </div>
+      </div>
+      <div class="check-item todo">
+        <span class="check-icon">⏳</span>
+        <div class="check-text">
+          <strong>Retirar dólares para pagar a estadia no Atacama</strong>
+          <small>US$ 977,50 · pagar no check-in em USD garante a isenção de ISS de 19%</small>
+        </div>
+      </div>
+      <div class="check-item todo">
+        <span class="check-icon">⏳</span>
+        <div class="check-text">
+          <strong>Reservar transporte para Farellones</strong>
+          <small>Santiago · Temporada Alta + Férias de Inverno (06–19/jul) — esgota rápido, reservar com antecedência</small>
+        </div>
+      </div>
+      <div class="check-item todo">
+        <span class="check-icon">⏳</span>
+        <div class="check-text">
+          <strong>Reservar transfer Calama → San Pedro</strong>
+          <small>08/jul · chegada Calama às 11:20 · ~1h de distância</small>
+        </div>
+      </div>
+      <div class="check-item todo">
+        <span class="check-icon">⏳</span>
+        <div class="check-text">
+          <strong>Definir datas dos passeios no Atacama com a Araya</strong>
+          <small>4 passeios para encaixar entre 09 e 12/jul</small>
+        </div>
+      </div>
+      <div class="check-item info">
+        <span class="check-icon">💡</span>
+        <div class="check-text">
+          <strong>Guardar a Tarjeta de Turismo recebida na imigração (04/jul)</strong>
+          <small>Apresentar junto com o passaporte no check-in do lodge para confirmar isenção de ISS</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ════════════════════════════════════════════ FINANCEIRO -->
+<div id="financeiro" style="background:#f0ecfa;padding:28px 0 0;scroll-margin-top:calc(var(--nav-h) + 10px)">
+  <div style="max-width:1100px;margin:0 auto;padding:0 20px 28px">
+    <div class="section-title" style="margin-bottom:16px">💜 Financeiro</div>
+    <div class="fin-section">
+      <div class="fin-header">
+        <h2>Resumo Financeiro — Viagem ao Chile · Julho 2026</h2>
+        <p>3 passageiros · 10 noites · Santiago + Atacama</p>
+      </div>
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th>Item</th><th>Detalhe</th>
+            <th style="text-align:right">Valor</th>
+            <th style="text-align:right">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="fin-group-label"><td colspan="4">✈️ Passagens Aéreas</td></tr>
+          <tr>
+            <td>LATAM Airlines</td>
+            <td>GRU→AEP→SCL (04/jul) · SCL→FLN→GRU (14/jul) · Reserva DFZZBN · Economy Full</td>
+            <td class="valor">R$ 8.932</td>
+            <td class="valor pago">✅ Pago</td>
+          </tr>
+          <tr>
+            <td>JetSMART</td>
+            <td>SCL→CJC (08/jul) · CJC→SCL (13/jul) · Reserva E689JC · Tarifa SMART</td>
+            <td class="valor">R$ 1.924</td>
+            <td class="valor pago">✅ Pago</td>
+          </tr>
+
+          <tr class="fin-group-label"><td colspan="4">🏨 Hospedagem</td></tr>
+          <tr>
+            <td>Airbnb Providencia</td>
+            <td>Santiago · 4 noites (04–08/jul) · Conf. HMFKQ3AXTF</td>
+            <td class="valor">R$ 1.767</td>
+            <td class="valor pago">✅ Pago</td>
+          </tr>
+          <tr>
+            <td>Nueva Lodge La Estación</td>
+            <td>San Pedro de Atacama · 5 noites (08–13/jul) · Conf. 5791.598.308 · Café incluso</td>
+            <td class="valor">US$ 977,50<br><small style="color:var(--subtexto)">≈ R$ 5.884</small></td>
+            <td class="valor apagar">⏳ USD no check-in</td>
+          </tr>
+          <tr>
+            <td>Courtyard Marriott Airport</td>
+            <td>Santiago · 1 noite (13–14/jul) · Conf. 5915.964.554 · Café incluso · Não reembolsável</td>
+            <td class="valor">R$ 522</td>
+            <td class="valor pago">✅ Pago</td>
+          </tr>
+
+          <tr class="fin-group-label"><td colspan="4">🏜️ Passeios — Araya Atacama #134756</td></tr>
+          <tr>
+            <td>Sinal 30%</td>
+            <td>🔭 Astronômico + 🌋 El Tatio + 🏔️ Lagos + 🦩 Laguna Lejía · CLP $396.900 · câmbio 177</td>
+            <td class="valor">R$ 2.243</td>
+            <td class="valor pago">✅ Pago</td>
+          </tr>
+          <tr>
+            <td>Saldo 70%</td>
+            <td>CLP $926.100 · pagar na chegada · câmbio de referência 177</td>
+            <td class="valor">R$ 5.232</td>
+            <td class="valor apagar">⏳ A pagar</td>
+          </tr>
+
+          <tr class="subtotal-row">
+            <td colspan="2"><strong>Total já pago</strong></td>
+            <td class="valor pago"><strong>R$ 15.388</strong></td>
+            <td></td>
+          </tr>
+          <tr class="subtotal-row">
+            <td colspan="2"><strong>Ainda a pagar</strong> <small style="font-weight:400;color:var(--subtexto)">(lodge USD + saldo passeios)</small></td>
+            <td class="valor apagar"><strong>R$ 11.116</strong></td>
+            <td></td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="2"><strong>TOTAL GERAL DA VIAGEM</strong></td>
+            <td class="valor" style="color:var(--roxo)"><strong>R$ 26.504</strong></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="fin-summary">
+        <div class="fin-sum-box pago">
+          <div class="label">Já pago</div>
+          <div class="amount">R$ 15.388</div>
+        </div>
+        <div class="fin-sum-box apagar">
+          <div class="label">A pagar</div>
+          <div class="amount">R$ 11.116</div>
+        </div>
+        <div class="fin-sum-box total">
+          <div class="label">Total da viagem</div>
+          <div class="amount">R$ 26.504</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alerta azul" style="margin-top:14px">
+      <span>💡</span>
+      <span>O saldo dos passeios (CLP $926.100) e o lodge (US$ 977,50) foram convertidos com câmbio de referência R$1 = CLP$177 / dólar vigente. Os valores reais dependem do câmbio na data do pagamento.</span>
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">
+  Roteiro gerado em junho de 2026 &nbsp;·&nbsp; Viagem: 04–14 de julho de 2026 &nbsp;·&nbsp; Santiago + San Pedro de Atacama, Chile
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  STATUS DE VOO — AeroDataBox via RapidAPI
+//  Documentação: https://rapidapi.com/aedbx-aedbx/api/aerodatabox
+//  ✅ HTTPS nativo — sem proxy — 500 req/mês grátis
+//  Como obter sua chave:
+//    1. Crie conta em rapidapi.com
+//    2. Acesse aerodatabox na RapidAPI e clique em "Subscribe"
+//    3. Copie o valor de "X-RapidAPI-Key" nos exemplos de código
+// ════════════════════════════════════════════════════════════
+
+const VOOS = [
+  { id: 'LA8140', iata: 'LA8140', data: '2026-07-04', eleId: 's-LA8140' },
+  { id: 'LA454',  iata: 'LA454',  data: '2026-07-04', eleId: 's-LA454'  },
+  { id: 'JA36',   iata: 'JA36',   data: '2026-07-08', eleId: 's-JA36'   },
+  { id: 'JA31',   iata: 'JA31',   data: '2026-07-13', eleId: 's-JA31'   },
+  { id: 'LA516',  iata: 'LA516',  data: '2026-07-14', eleId: 's-LA516'  },
+  { id: 'LA3307', iata: 'LA3307', data: '2026-07-14', eleId: 's-LA3307' },
+];
+
+const CACHE_KEY  = 'chile2026_flight_status';
+const CACHE_TTL  = 30 * 60 * 1000; // 30 minutos
+
+// Mapeamento de status AeroDataBox → badge
+function statusBadge(status, delayMin) {
+  const s = (status || '').toLowerCase();
+  const d = parseInt(delayMin) || 0;
+
+  if (s === 'arrived')   return { cls: 'badge-status-ok',      label: '✅ Pousado'    };
+  if (s === 'enroute')   return { cls: 'badge-status-active',  label: '✈️ Em voo'     };
+  if (s === 'departed')  return { cls: 'badge-status-active',  label: '✈️ Decolou'    };
+  if (s === 'canceled')  return { cls: 'badge-status-cancel',  label: '❌ Cancelado'  };
+  if (s === 'diverted')  return { cls: 'badge-status-cancel',  label: '⚠️ Desviado'   };
+  if (d > 15)            return { cls: 'badge-status-delay',   label: `⏱ +${d}min`   };
+  if (s === 'expected' || s === 'unknown' || s === '')
+                         return { cls: 'badge-status-default', label: '🕐 Previsto'   };
+  return                        { cls: 'badge-status-default', label: '🕐 ' + status  };
+}
+
+function renderStatus(eleId, data) {
+  const el = document.getElementById(eleId);
+  if (!el) return;
+
+  if (!data) {
+    el.innerHTML = '<span class="badge badge-status-default" title="Sem dados para esta data ainda">🕐 Previsto</span>';
+    return;
+  }
+
+  // AeroDataBox retorna array — pegamos o primeiro resultado
+  const voo = Array.isArray(data) ? data[0] : data;
+  if (!voo) {
+    el.innerHTML = '<span class="badge badge-status-default">Sem dados</span>';
+    return;
+  }
+
+  const status   = voo.status || '';
+  const depDelay = voo.departure?.delay || 0;
+  const { cls, label } = statusBadge(status, depDelay);
+
+  let extra = '';
+
+  // Horário real de partida
+  const depActual = voo.departure?.actualTime?.local || voo.departure?.actualTime?.utc;
+  if (depActual) {
+    extra += `<div class="flight-detail">Partiu: ${depActual.slice(11,16)}</div>`;
+  }
+  // Atraso
+  if (depDelay > 15) {
+    extra += `<div class="flight-detail" style="color:#c2600a">Atraso: ${depDelay} min</div>`;
+  }
+  // Horário real de chegada
+  const arrActual = voo.arrival?.actualTime?.local || voo.arrival?.actualTime?.utc;
+  if (arrActual) {
+    extra += `<div class="flight-detail">Pousou: ${arrActual.slice(11,16)}</div>`;
+  }
+  // Portão
+  if (voo.departure?.gate) {
+    extra += `<div class="flight-detail">Portão: ${voo.departure.gate}</div>`;
+  }
+
+  el.innerHTML = `<span class="badge ${cls}">${label}</span>${extra}`;
+}
+
+// Carrega cache do localStorage
+function loadCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (Date.now() - parsed.ts > CACHE_TTL) return null; // expirado
+    return parsed;
+  } catch { return null; }
+}
+
+function saveCache(results) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), results }));
+  } catch {}
+}
+
+function getApiKey() {
+  const input = document.getElementById('apiKeyInput');
+  const saved = localStorage.getItem('chile2026_apikey');
+  return (input && input.value.trim()) || saved || '';
+}
+
+// Busca status via AeroDataBox (RapidAPI) — HTTPS direto, sem proxy
+async function fetchVoo(apiKey, voo) {
+  // AeroDataBox endpoint: /flights/number/{flightNumber}/{date}
+  const url = `https://aerodatabox.p.rapidapi.com/flights/number/${voo.iata}/${voo.data}`;
+
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key':  apiKey,
+        'X-RapidAPI-Host': 'aerodatabox.p.rapidapi.com'
+      },
+      signal: AbortSignal.timeout(10000)
+    });
+
+    console.log(`[${voo.iata}] HTTP ${res.status}`);
+
+    if (res.status === 401 || res.status === 403) return { _error: 'Chave inválida' };
+    if (res.status === 404) return null; // voo não encontrado / sem dados ainda
+    if (res.status === 429) return { _error: 'Limite de requisições atingido' };
+    if (!res.ok) return { _error: `HTTP ${res.status}` };
+
+    const json = await res.json();
+    console.log(`[${voo.iata}]`, json);
+    return json; // array de resultados
+
+  } catch(e) {
+    console.error(`[${voo.iata}]`, e.message);
+    return { _error: e.message };
+  }
+}
+
+// Função principal — chamada pelo botão
+async function fetchAllStatus() {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    alert('Cole sua chave da AviationStack no campo acima e tente novamente.\n\nCrie uma grátis em: aviationstack.com/signup/free');
+    return;
+  }
+
+  // Salva chave para próxima vez
+  localStorage.setItem('chile2026_apikey', apiKey);
+  document.getElementById('apiKeyInput').value = apiKey;
+
+  const btn = document.getElementById('btnRefresh');
+  btn.disabled = true;
+  btn.classList.add('loading');
+  btn.querySelector('.spin').textContent = '⏳';
+  document.getElementById('statusUpdated').textContent = 'Consultando API...';
+
+  // Sinaliza carregando
+  VOOS.forEach(v => {
+    const el = document.getElementById(v.eleId);
+    if (el) el.innerHTML = '<span class="badge badge-status-default">⏳</span>';
+  });
+
+  const results = {};
+
+  // Busca sequencialmente para não disparar tudo de uma vez
+  for (const voo of VOOS) {
+    const data = await fetchVoo(apiKey, voo);
+    results[voo.id] = data;
+
+    if (data && data._error) {
+      document.getElementById(voo.eleId).innerHTML =
+        `<span class="badge badge-status-error" title="${data._error}" style="cursor:help">⚠️ ${data._error}</span>`;
+    } else {
+      renderStatus(voo.eleId, data);
+    }
+
+    // Pequena pausa entre requisições
+    await new Promise(r => setTimeout(r, 2000)); // 2s entre req — respeita rate limit RapidAPI
+  }
+
+  saveCache(results);
+
+  const agora = new Date().toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+  document.getElementById('statusUpdated').textContent = `Atualizado às ${agora}`;
+
+  btn.disabled = false;
+  btn.classList.remove('loading');
+  btn.querySelector('.spin').textContent = '🔄';
+}
+
+// ── On load: restaura API key e carrega cache se existir
+window.addEventListener('DOMContentLoaded', () => {
+  const savedKey = localStorage.getItem('chile2026_apikey');
+  if (savedKey) {
+    document.getElementById('apiKeyInput').value = savedKey;
+  }
+
+  const cache = loadCache();
+  if (cache) {
+    VOOS.forEach(v => renderStatus(v.eleId, cache.results[v.id]));
+    const d = new Date(cache.ts).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
+    document.getElementById('statusUpdated').textContent = `Cache de ${d} (válido por 30 min)`;
+  }
+});
+</script>
+
+</body>
+</html>
