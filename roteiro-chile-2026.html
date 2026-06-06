@@ -280,6 +280,34 @@
 
     .flight-detail { font-size: 10px; color: var(--subtexto); margin-top: 3px; line-height: 1.4; }
 
+    /* ══════════════════════════════════ BARRA DE COTAÇÃO */
+    .currency-bar {
+      background: #0f2840;
+      color: rgba(255,255,255,.9);
+      padding: 6px 24px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .currency-bar .pair {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .currency-bar .rate {
+      font-weight: 700; font-size: 13px; color: white;
+    }
+    .currency-bar .change-pos { color: #6ee7a0; font-weight: 600; }
+    .currency-bar .change-neg { color: #fca5a5; font-weight: 600; }
+    .currency-bar .change-neu { color: rgba(255,255,255,.6); }
+    .currency-bar .sep { opacity: .3; }
+    .currency-bar .updated { font-size: 11px; opacity: .55; margin-left: auto; }
+    .currency-bar .loading { opacity: .5; font-style: italic; }
+    @media(max-width:600px) {
+      .currency-bar { padding: 5px 14px; gap: 10px; }
+      .currency-bar .updated { margin-left: 0; }
+    }
+
     /* ══════════════════════════════════ TABELAS RESPONSIVAS */
     .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
@@ -398,6 +426,19 @@
       <div class="doc">GI058147</div><div class="tipo">Criança · 11 anos</div>
     </div>
   </div>
+</div>
+
+<!-- ════════════════════════════════════════════ BARRA DE COTAÇÃO -->
+<div class="currency-bar" id="currencyBar">
+  <div class="pair">
+    <span>💱</span>
+    <span id="cotacaoValor" class="rate loading">Carregando cotação...</span>
+  </div>
+  <span class="sep">|</span>
+  <span id="cotacaoInverso" style="display:none; opacity:.75"></span>
+  <span class="sep" id="cotacaoSep2" style="display:none">|</span>
+  <span id="cotacaoVariacao" style="display:none"></span>
+  <span class="updated" id="cotacaoHora"></span>
 </div>
 
 <!-- ════════════════════════════════════════════ BANNER INSTALAR -->
@@ -951,6 +992,67 @@
 <div class="page-footer">
   Roteiro gerado em junho de 2026 &nbsp;·&nbsp; Viagem: 04–14 de julho de 2026 &nbsp;·&nbsp; Santiago + San Pedro de Atacama, Chile
 </div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  COTAÇÃO CLP → BRL — AwesomeAPI (sem chave, gratuita)
+//  https://docs.awesomeapi.com.br/api-de-moedas
+// ════════════════════════════════════════════════════════════
+
+async function fetchCotacao() {
+  try {
+    const res = await fetch('https://economia.awesomeapi.com.br/json/last/CLP-BRL', {
+      signal: AbortSignal.timeout(6000)
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    const c = data.CLPBRL;
+
+    const bid       = parseFloat(c.bid);
+    const pct       = parseFloat(c.pctChange);
+    const varBid    = parseFloat(c.varBid);
+
+    // CLP$ 1.000 → R$
+    const por1000   = (bid * 1000).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    // R$ 1 → CLP$
+    const por1brl   = Math.round(1 / bid).toLocaleString('pt-BR');
+
+    // Variação colorida
+    const sinal     = pct > 0 ? '+' : '';
+    const clsVar    = pct > 0 ? 'change-pos' : pct < 0 ? 'change-neg' : 'change-neu';
+    const arrow     = pct > 0 ? '▲' : pct < 0 ? '▼' : '—';
+
+    // Hora da atualização
+    const dt = new Date(c.create_date);
+    const hora = dt.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    const dia  = dt.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+
+    // Atualiza DOM
+    document.getElementById('cotacaoValor').innerHTML =
+      `CLP$ 1.000 = <strong>R$ ${por1000}</strong>`;
+    document.getElementById('cotacaoValor').classList.remove('loading');
+
+    document.getElementById('cotacaoInverso').textContent = `R$ 1 = CLP$ ${por1brl}`;
+    document.getElementById('cotacaoInverso').style.display = '';
+
+    document.getElementById('cotacaoSep2').style.display = '';
+
+    document.getElementById('cotacaoVariacao').innerHTML =
+      `<span class="${clsVar}">${arrow} ${sinal}${pct.toFixed(2).replace('.',',')}% hoje</span>`;
+    document.getElementById('cotacaoVariacao').style.display = '';
+
+    document.getElementById('cotacaoHora').textContent = `Atualizado ${dia} às ${hora}`;
+
+  } catch (err) {
+    console.warn('[cotacao] erro:', err.message);
+    document.getElementById('cotacaoValor').textContent = 'Cotação indisponível';
+  }
+}
+
+// Roda ao carregar a página
+document.addEventListener('DOMContentLoaded', fetchCotacao);
+
+</script>
 
 <script>
 // ════════════════════════════════════════════════════════════
