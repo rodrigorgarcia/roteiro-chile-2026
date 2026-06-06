@@ -400,6 +400,115 @@
       .fin-table th, .fin-table td { padding: 8px 10px; font-size: 12px; }
     }
 
+    /* ══════════════════════════════════ CONVERSOR */
+    .conversor-card {
+      background: white;
+      border: 1px solid var(--borda);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 28px;
+    }
+    details.conversor-details summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      user-select: none;
+      transition: background .15s;
+      font-weight: 600;
+      font-size: 14px;
+    }
+    details.conversor-details summary::-webkit-details-marker { display: none; }
+    details.conversor-details summary:hover { background: #fafbfc; }
+    details.conversor-details[open] summary {
+      border-bottom: 1px solid var(--borda);
+      background: var(--azul-claro);
+    }
+    .conversor-chevron {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--subtexto);
+      transition: transform .2s;
+    }
+    details.conversor-details[open] .conversor-chevron { transform: rotate(180deg); }
+
+    .conversor-body { padding: 18px 20px; }
+    .conversor-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .conversor-input-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cinza);
+      border: 1px solid var(--borda);
+      border-radius: 8px;
+      padding: 10px 14px;
+      flex: 1;
+      min-width: 180px;
+    }
+    .conversor-input-wrap .moeda-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--subtexto);
+      white-space: nowrap;
+    }
+    .conversor-input-wrap input {
+      border: none;
+      background: transparent;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--texto);
+      width: 100%;
+      outline: none;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+    .conversor-input-wrap input::placeholder { color: #bbb; font-weight: 400; font-size: 16px; }
+    .conversor-arrow { font-size: 20px; color: var(--azul); flex-shrink: 0; }
+    .conversor-resultado {
+      flex: 1;
+      min-width: 180px;
+      background: var(--azul-claro);
+      border: 1px solid #b3d4ef;
+      border-radius: 8px;
+      padding: 10px 14px;
+    }
+    .conversor-resultado .res-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--subtexto);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+    .conversor-resultado .res-valor {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--azul);
+    }
+    .conversor-resultado .res-taxa {
+      font-size: 11px;
+      color: var(--subtexto);
+      margin-top: 3px;
+    }
+    .conversor-resultado.sem-taxa {
+      background: #fffbea;
+      border-color: #f0e080;
+    }
+    .conversor-resultado.sem-taxa .res-valor {
+      color: #c2600a;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    @media (max-width: 600px) {
+      .conversor-row { flex-direction: column; align-items: stretch; }
+      .conversor-arrow { text-align: center; }
+    }
+
     /* ══════════════════════════════════ FOOTER */
     .page-footer { text-align:center; padding:24px; color:var(--subtexto); font-size:12px; border-top:1px solid var(--borda); background:white; }
   </style>
@@ -470,6 +579,38 @@
 </nav>
 
 <div class="container">
+
+  <!-- ════════════════════════════════════════════ CONVERSOR CLP → BRL -->
+  <div class="conversor-card">
+    <details class="conversor-details" id="conversorDetails">
+      <summary>
+        <span>💱</span>
+        <span>Conversor — Peso Chileno para Real</span>
+        <span class="conversor-chevron">▼</span>
+      </summary>
+      <div class="conversor-body">
+        <div class="conversor-row">
+          <div class="conversor-input-wrap">
+            <span class="moeda-label">CLP$</span>
+            <input
+              type="number"
+              id="conversorInput"
+              placeholder="0"
+              inputmode="numeric"
+              oninput="converterCLP()"
+              onfocus="this.select()"
+            />
+          </div>
+          <div class="conversor-arrow">→</div>
+          <div class="conversor-resultado" id="conversorResultado">
+            <div class="res-label">Equivale a</div>
+            <div class="res-valor" id="conversorValorBRL">—</div>
+            <div class="res-taxa" id="conversorTaxa">Digite um valor em pesos chilenos</div>
+          </div>
+        </div>
+      </div>
+    </details>
+  </div>
 
   <!-- ════════════════════════════════════════════ VOOS -->
   <div class="section" id="voos">
@@ -999,6 +1140,40 @@
 //  https://docs.awesomeapi.com.br/api-de-moedas
 // ════════════════════════════════════════════════════════════
 
+// Taxa de câmbio CLP→BRL (preenchida ao carregar cotação)
+let taxaCLPparaBRL = 0;
+
+function converterCLP() {
+  const input = document.getElementById('conversorInput');
+  const resultado = document.getElementById('conversorResultado');
+  const valorBRL  = document.getElementById('conversorValorBRL');
+  const taxaEl    = document.getElementById('conversorTaxa');
+
+  const clp = parseFloat(input.value);
+
+  if (!taxaCLPparaBRL) {
+    resultado.className = 'conversor-resultado sem-taxa';
+    valorBRL.textContent = 'Cotação ainda não carregada';
+    taxaEl.textContent   = 'Aguarde ou recarregue a página';
+    return;
+  }
+
+  resultado.className = 'conversor-resultado';
+
+  if (!input.value || isNaN(clp) || clp <= 0) {
+    valorBRL.textContent = '—';
+    taxaEl.textContent   = 'Digite um valor em pesos chilenos';
+    return;
+  }
+
+  const brl = clp * taxaCLPparaBRL;
+  valorBRL.textContent = 'R$ ' + brl.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const clpFmt = clp.toLocaleString('pt-BR');
+  const taxaFmt = taxaCLPparaBRL.toLocaleString('pt-BR', { minimumFractionDigits: 4, maximumFractionDigits: 6 });
+  taxaEl.textContent = `CLP$ ${clpFmt} × ${taxaFmt} = R$ ${brl.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+}
+
 async function fetchCotacao() {
   try {
     const res = await fetch('https://economia.awesomeapi.com.br/json/last/CLP-BRL', {
@@ -1010,6 +1185,7 @@ async function fetchCotacao() {
 
     const bid       = parseFloat(c.bid);
     const pct       = parseFloat(c.pctChange);
+    taxaCLPparaBRL  = bid; // salva na variável global para o conversor
     const varBid    = parseFloat(c.varBid);
 
     // CLP$ 1.000 → R$
