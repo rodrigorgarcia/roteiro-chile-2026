@@ -1259,9 +1259,19 @@ function converterCLP() {
 
 async function fetchCotacao() {
   try {
-    const res = await fetch('https://economia.awesomeapi.com.br/json/last/CLP-BRL', {
-      signal: AbortSignal.timeout(6000)
-    });
+    // AbortController manual — compatível com iOS Safari antigo
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 7000);
+
+    let res;
+    try {
+      res = await fetch('https://economia.awesomeapi.com.br/json/last/CLP-BRL', {
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const c = data.CLPBRL;
@@ -1304,7 +1314,10 @@ async function fetchCotacao() {
 
   } catch (err) {
     console.warn('[cotacao] erro:', err.message);
-    document.getElementById('cotacaoValor').textContent = 'Cotação indisponível';
+    document.getElementById('cotacaoValor').classList.remove('loading');
+    document.getElementById('cotacaoValor').innerHTML =
+      'Cotação indisponível &nbsp;<span onclick="fetchCotacao()" style="cursor:pointer;text-decoration:underline;font-size:11px;opacity:.8">↻ tentar novamente</span>';
+    document.getElementById('cotacaoHora').textContent = '';
   }
 }
 
