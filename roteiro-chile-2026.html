@@ -54,16 +54,31 @@
     }
     .page-header h1 { font-size: 18px; font-weight: 700; }
     .page-header .subtitle { font-size: 12px; opacity: .75; margin-top: 2px; }
-    .passageiros { display: flex; gap: 8px; flex-wrap: wrap; }
-    .pax-badge {
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.25);
-      border-radius: 6px;
-      padding: 5px 11px;
+
+    .countdown-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 8px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 13px; font-weight: 700;
     }
-    .pax-badge .nome { font-weight: 600; font-size: 12px; }
-    .pax-badge .doc  { font-size: 11px; opacity: .7; }
-    .pax-badge .tipo { font-size: 10px; opacity: .55; }
+    .countdown-badge .dias-num {
+      font-size: 18px; font-weight: 800;
+      color: #ffe066;
+    }
+
+    .pax-list { display: flex; flex-direction: column; gap: 5px; }
+    .pax-line {
+      font-size: 12px;
+      opacity: .85;
+      display: flex; align-items: baseline; gap: 5px;
+      flex-wrap: wrap;
+    }
+    .pax-line .pax-nome { font-weight: 600; opacity: 1; }
+    .pax-line .pax-doc  { font-family: monospace; font-size: 11px; opacity: .65; }
+    .pax-line .pax-tipo { font-size: 10px; opacity: .55; }
 
     /* ══════════════════════════════════ NAV STICKY */
     .sticky-nav {
@@ -344,10 +359,10 @@
 
     /* ══════════════════════════════════ MOBILE */
     @media (max-width: 600px) {
-      .page-header { padding: 12px 16px; flex-direction: column; align-items: flex-start; }
+      .page-header { padding: 12px 16px; flex-direction: column; align-items: flex-start; gap: 8px; }
       .page-header h1 { font-size: 15px; }
-      .pax-badge { padding: 4px 8px; }
-      .pax-badge .nome { font-size: 11px; }
+      .countdown-badge { font-size: 12px; }
+      .countdown-badge .dias-num { font-size: 15px; }
 
       .container { padding: 16px 12px; }
       .section { margin-bottom: 20px; }
@@ -520,19 +535,29 @@
   <div>
     <h1>🇨🇱 Viagem ao Chile — Julho 2026</h1>
     <div class="subtitle">04 → 14 de julho &nbsp;·&nbsp; 10 noites &nbsp;·&nbsp; Santiago + Atacama</div>
+    <div class="countdown-badge" id="countdownBadge">
+      <span>🗓️</span>
+      <span>Calculando...</span>
+    </div>
   </div>
-  <div class="passageiros">
-    <div class="pax-badge">
-      <div class="nome">Rodrigo Ramos Garcia</div>
-      <div class="doc">GM584170</div><div class="tipo">Adulto</div>
+  <div class="pax-list">
+    <div class="pax-line">
+      <span>👤</span>
+      <span class="pax-nome">Rodrigo Ramos Garcia</span>
+      <span class="pax-doc">GM584170</span>
+      <span class="pax-tipo">· Adulto</span>
     </div>
-    <div class="pax-badge">
-      <div class="nome">Vanessa Duarte Corredato</div>
-      <div class="doc">GM309814</div><div class="tipo">Adulto</div>
+    <div class="pax-line">
+      <span>👤</span>
+      <span class="pax-nome">Vanessa Duarte Corredato</span>
+      <span class="pax-doc">GM309814</span>
+      <span class="pax-tipo">· Adulto</span>
     </div>
-    <div class="pax-badge">
-      <div class="nome">Cecilia Corredato Garcia</div>
-      <div class="doc">GI058147</div><div class="tipo">Criança · 11 anos</div>
+    <div class="pax-line">
+      <span>👧</span>
+      <span class="pax-nome">Cecilia Corredato Garcia</span>
+      <span class="pax-doc">GI058147</span>
+      <span class="pax-tipo">· Criança · 11 anos</span>
     </div>
   </div>
 </div>
@@ -1321,8 +1346,32 @@ async function fetchCotacao() {
   }
 }
 
+// ── Contador regressivo
+function updateCountdown() {
+  const partida = new Date('2026-07-04T00:00:00');
+  const hoje    = new Date();
+  hoje.setHours(0, 0, 0, 0);
+  const diff = Math.round((partida - hoje) / (1000 * 60 * 60 * 24));
+  const el = document.getElementById('countdownBadge');
+
+  if (diff > 1) {
+    el.innerHTML = `<span>🗓️</span> <span class="dias-num">${diff}</span> <span>dias para a viagem!</span>`;
+  } else if (diff === 1) {
+    el.innerHTML = `<span>🗓️</span> <span class="dias-num">1</span> <span>dia para a viagem! Amanhã!</span>`;
+  } else if (diff === 0) {
+    el.innerHTML = `<span>🛫</span> <span style="color:#ffe066;font-size:15px">HOJE É O DIA!</span>`;
+  } else if (diff >= -10) {
+    el.innerHTML = `<span>✈️</span> <span>Viagem em andamento</span>`;
+  } else {
+    el.innerHTML = `<span>🇨🇱</span> <span>Ótimas memórias!</span>`;
+  }
+}
+
 // Roda ao carregar a página
-document.addEventListener('DOMContentLoaded', fetchCotacao);
+document.addEventListener('DOMContentLoaded', () => {
+  fetchCotacao();
+  updateCountdown();
+});
 
 </script>
 
