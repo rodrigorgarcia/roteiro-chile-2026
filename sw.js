@@ -4,7 +4,7 @@
 //  Permite uso offline após primeira visita
 // ════════════════════════════════════════════════════════════
 
-const CACHE_NAME = 'chile-2026-v1';
+const CACHE_NAME = 'chile-2026-v2';
 const ASSETS = [
   '/roteiro-chile-2026.html',
   '/manifest.json',
@@ -38,31 +38,30 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Intercepta requisições — Cache First para assets, Network First para API
+// Intercepta requisições — Network First para assets, pass-through para APIs
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
 
-  // Requisições para APIs externas (AeroDataBox, etc.) — sempre rede
+  // Requisições para APIs externas — sempre rede, sem cache
   if (url.hostname !== location.hostname) {
-    return; // deixa passar para a rede normalmente
+    return;
   }
 
-  // Assets locais — Cache First
+  // Assets locais — Network First: busca versão nova na rede;
+  // só usa cache se estiver offline (garante sempre o HTML atualizado)
   event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(event.request).then((response) => {
-        // Cacheia a resposta para próxima vez
-        if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
-        }
-        return response;
-      }).catch(() => {
-        // Offline e sem cache — retorna página principal como fallback
-        return caches.match('/roteiro-chile-2026.html');
-      });
+    fetch(event.request).then((response) => {
+      // Atualiza o cache com a versão mais recente
+      if (response.ok) {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+      }
+      return response;
+    }).catch(() => {
+      // Sem rede — usa cache como fallback offline
+      console.log('[SW] Offline — servindo do cache:', event.request.url);
+      return caches.match(event.request)
+        .then((cached) => cached || caches.match('/roteiro-chile-2026.html'));
     })
   );
 });
