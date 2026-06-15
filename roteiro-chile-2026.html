@@ -223,6 +223,39 @@
     .check-text strong { display:block; margin-bottom:1px; }
     .check-text small  { color:var(--subtexto); }
 
+    .check-group { border-radius:10px; overflow:hidden; border:1px solid var(--borda); }
+    .check-group + .check-group { margin-top:10px; }
+    details.check-group-details summary {
+      list-style: none;
+      cursor: pointer;
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      user-select: none;
+      transition: background .15s;
+    }
+    details.check-group-details summary::-webkit-details-marker { display:none; }
+    details.check-group-details summary:hover { filter: brightness(.97); }
+    .check-group-todo   summary { background: #fffbea; }
+    .check-group-done   summary { background: var(--verde-claro); }
+    .check-group-info   summary { background: var(--azul-claro); }
+    .check-group-badge {
+      margin-left: auto;
+      font-size: 11px; font-weight: 700;
+      padding: 2px 8px; border-radius: 20px;
+    }
+    .check-group-todo .check-group-badge { background:#f0e080; color:#7a5c00; }
+    .check-group-done .check-group-badge { background:#b2dcc7; color:#1e7e4e; }
+    .check-group-info .check-group-badge { background:#b3d4ef; color:#1a6fa8; }
+    .check-group-chevron { font-size:12px; color:var(--subtexto); transition:transform .2s; }
+    details.check-group-details[open] .check-group-chevron { transform:rotate(180deg); }
+    .check-group-body { display:flex; flex-direction:column; gap:0; }
+    .check-group-body .check-item { border-radius:0; border-left:none; border-right:none; border-top:none; }
+    .check-group-body .check-item:last-child { border-bottom:none; }
+
     /* ══════════════════════════════════ ALERTA */
     .alerta { display:flex; gap:10px; padding:12px 14px; border-radius:8px; font-size:13px; margin-top:8px; }
     .alerta.amarelo { background:#fffbea; border:1px solid #f0e080; }
@@ -1060,78 +1093,116 @@
   <!-- ════════════════════════════════════════════ CHECKLIST -->
   <div class="section" id="checklist">
     <div class="section-title">✅ Checklist</div>
-    <div class="check-list">
-      <div class="check-item done">
-        <span class="check-icon">✅</span>
-        <div class="check-text">
-          <strong>Checkout antecipado combinado com Juan (Airbnb)</strong>
-          <small>Saída às ~06:30 do dia 08/jul para o voo JA 36 às 09:10</small>
+
+    <!-- PENDENTES -->
+    <div class="check-group check-group-todo">
+      <details class="check-group-details" open>
+        <summary>
+          <span>⏳</span> Pendentes
+          <span class="check-group-badge">4</span>
+          <span class="check-group-chevron">▼</span>
+        </summary>
+        <div class="check-group-body">
+          <div class="check-item todo">
+            <span class="check-icon">🛡️</span>
+            <div class="check-text">
+              <strong>Contratar seguro viagem</strong>
+              <small>3 passageiros · cobertura internacional · antes de 04/jul</small>
+            </div>
+          </div>
+          <div class="check-item todo">
+            <span class="check-icon">⏳</span>
+            <div class="check-text">
+              <strong>Reservar transporte para Farellones</strong>
+              <small>Santiago · Temporada Alta + Férias de Inverno (06–19/jul) — esgota rápido, reservar com antecedência</small>
+            </div>
+          </div>
+          <div class="check-item todo">
+            <span class="check-icon">⏳</span>
+            <div class="check-text">
+              <strong>Retirar dólares para pagar a estadia no Atacama</strong>
+              <small>US$ 977,50 · pagar no check-in em USD garante a isenção de ISS de 19%</small>
+            </div>
+          </div>
+          <div class="check-item todo">
+            <span class="check-icon">⏳</span>
+            <div class="check-text">
+              <strong>Definir datas dos passeios no Atacama com a Araya</strong>
+              <small>4 passeios para encaixar entre 09 e 12/jul</small>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="check-item done">
-        <span class="check-icon">✅</span>
-        <div class="check-text">
-          <strong>Shuttle Marriott reservado</strong>
-          <small>Chegada 13/jul ~16h · porta 3, 3º andar · +56 94 265 2424</small>
-        </div>
-      </div>
-      <div class="check-item done">
-        <span class="check-icon">✅</span>
-        <div class="check-text">
-          <strong>Sinal de 30% pago — Passeios Araya Atacama</strong>
-          <small>CLP $396.900 · câmbio R$1 = CLP$177 · R$ 2.243</small>
-        </div>
-      </div>
-      <div class="check-item todo">
-        <span class="check-icon">⏳</span>
-        <div class="check-text">
-          <strong>Retirar dólares para pagar a estadia no Atacama</strong>
-          <small>US$ 977,50 · pagar no check-in em USD garante a isenção de ISS de 19%</small>
-        </div>
-      </div>
-      <div class="check-item todo">
-        <span class="check-icon">⏳</span>
-        <div class="check-text">
-          <strong>Reservar transporte para Farellones</strong>
-          <small>Santiago · Temporada Alta + Férias de Inverno (06–19/jul) — esgota rápido, reservar com antecedência</small>
-        </div>
-      </div>
-      <div class="check-item done">
-        <span class="check-icon">✅</span>
-        <div class="check-text">
-          <strong>Transfer Calama ↔ San Pedro pago — Transfer Pampa TP0000886</strong>
-          <small>USD $114,00 · 3 pax · ida 08/jul (JA36 11:20) · volta 13/jul pickup ~09:40 · +56 95 226 0720</small>
-        </div>
-      </div>
-      <div class="check-item todo">
-        <span class="check-icon">⏳</span>
-        <div class="check-text">
-          <strong>Definir datas dos passeios no Atacama com a Araya</strong>
-          <small>4 passeios para encaixar entre 09 e 12/jul</small>
-        </div>
-      </div>
-      <div class="check-item info">
-        <span class="check-icon">💡</span>
-        <div class="check-text">
-          <strong>Guardar a Tarjeta de Turismo recebida na imigração (04/jul)</strong>
-          <small>Apresentar junto com o passaporte no check-in do lodge para confirmar isenção de ISS</small>
-        </div>
-      </div>
-      <div class="check-item todo">
-        <span class="check-icon">🛡️</span>
-        <div class="check-text">
-          <strong>Contratar seguro viagem</strong>
-          <small>3 passageiros · cobertura internacional · antes de 04/jul</small>
-        </div>
-      </div>
-      <div class="check-item info">
-        <span class="check-icon">📶</span>
-        <div class="check-text">
-          <strong>Internet — Vivo Travel incluso nas diárias</strong>
-          <small>2 GB de franquia por dia</small>
-        </div>
-      </div>
+      </details>
     </div>
+
+    <!-- CONCLUÍDO -->
+    <div class="check-group check-group-done">
+      <details class="check-group-details">
+        <summary>
+          <span>✅</span> Concluído
+          <span class="check-group-badge">4</span>
+          <span class="check-group-chevron">▼</span>
+        </summary>
+        <div class="check-group-body">
+          <div class="check-item done">
+            <span class="check-icon">✅</span>
+            <div class="check-text">
+              <strong>Transfer Calama ↔ San Pedro pago — Transfer Pampa TP0000886</strong>
+              <small>USD $114,00 · 3 pax · ida 08/jul (JA36 11:20) · volta 13/jul pickup ~09:40 · +56 95 226 0720</small>
+            </div>
+          </div>
+          <div class="check-item done">
+            <span class="check-icon">✅</span>
+            <div class="check-text">
+              <strong>Sinal de 30% pago — Passeios Araya Atacama</strong>
+              <small>CLP $396.900 · câmbio R$1 = CLP$177 · R$ 2.243</small>
+            </div>
+          </div>
+          <div class="check-item done">
+            <span class="check-icon">✅</span>
+            <div class="check-text">
+              <strong>Shuttle Marriott reservado</strong>
+              <small>Chegada 13/jul ~16h · porta 3, 3º andar · +56 94 265 2424</small>
+            </div>
+          </div>
+          <div class="check-item done">
+            <span class="check-icon">✅</span>
+            <div class="check-text">
+              <strong>Checkout antecipado combinado com Juan (Airbnb)</strong>
+              <small>Saída às ~06:30 do dia 08/jul para o voo JA 36 às 09:10</small>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <!-- INFORMAÇÕES -->
+    <div class="check-group check-group-info">
+      <details class="check-group-details">
+        <summary>
+          <span>💡</span> Informações
+          <span class="check-group-badge">2</span>
+          <span class="check-group-chevron">▼</span>
+        </summary>
+        <div class="check-group-body">
+          <div class="check-item info">
+            <span class="check-icon">💡</span>
+            <div class="check-text">
+              <strong>Guardar a Tarjeta de Turismo recebida na imigração (04/jul)</strong>
+              <small>Apresentar junto com o passaporte no check-in do lodge para confirmar isenção de ISS</small>
+            </div>
+          </div>
+          <div class="check-item info">
+            <span class="check-icon">📶</span>
+            <div class="check-text">
+              <strong>Internet — Vivo Travel incluso nas diárias</strong>
+              <small>2 GB de franquia por dia</small>
+            </div>
+          </div>
+        </div>
+      </details>
+    </div>
+
   </div>
 
 </div><!-- /container -->
