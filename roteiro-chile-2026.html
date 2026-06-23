@@ -260,6 +260,7 @@
     .alerta { display:flex; gap:10px; padding:12px 14px; border-radius:8px; font-size:13px; margin-top:8px; }
     .alerta.amarelo { background:#fffbea; border:1px solid #f0e080; }
     .alerta.azul    { background:var(--azul-claro); border:1px solid #b3d4ef; }
+    .alerta.verde   { background:var(--verde-claro); border:1px solid #b2dcc7; }
 
     /* ══════════════════════════════════ FINANCEIRO */
     .fin-section { background:white; border:1px solid var(--borda); border-radius:12px; overflow:hidden; }
@@ -915,9 +916,9 @@
   <!-- ════════════════════════════════════════════ PASSEIOS ATACAMA -->
   <div class="section" id="passeios">
     <div class="section-title">🏜️ Passeios — Atacama · Araya Atacama #134756</div>
-    <div class="alerta amarelo" style="margin-bottom:14px">
-      <span>⚠️</span>
-      <span>Datas de cada passeio ainda são <strong>provisórias</strong> — a definir com a agência. Sinal de 30% já pago (R$ 2.243). Saldo de 70% (R$ 5.232) a pagar na chegada.</span>
+    <div class="alerta verde" style="margin-bottom:14px">
+      <span>✅</span>
+      <span><strong>Datas confirmadas pela Araya:</strong> 09/jul Astronômica · 10/jul Lagos & Pedras Vermelhas · 11/jul El Tatio · 12/jul Laguna Lejía &nbsp;·&nbsp; Sinal de 30% já pago (R$ 2.243). Saldo de 70% (R$ 5.232) a pagar na chegada.</span>
     </div>
     <div class="tour-grid">
 
@@ -930,7 +931,8 @@
               <div class="tour-summary-title">
                 <h4>Experiência Astronômica</h4>
                 <div class="tour-tags">
-                  <span class="badge badge-gray">Noturno · ~4h</span>
+                  <span class="badge" style="background:var(--azul-claro);color:var(--azul);border:1px solid #b3d4ef">09/jul (Qui)</span>
+                  <span class="badge badge-orange">Pickup 19:31 · ~4h</span>
                   <span class="badge badge-green">Baixo impacto</span>
                 </div>
               </div>
@@ -944,6 +946,7 @@
             </div>
           </summary>
           <div class="tour-body">
+            <div class="tour-row"><span class="k">Data</span><span class="v">09/jul (Qui) · pickup 19:31–20:11 · retorno 23:30–00:00</span></div>
             <div class="tour-row"><span class="k">Altitude</span><span class="v">2.400 m</span></div>
             <div class="tour-row"><span class="k">Nível físico</span><span class="v">Baixo</span></div>
             <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, astrônomo certificado, telescópio, sessão fotográfica profissional</span></div>
@@ -963,6 +966,7 @@
               <div class="tour-summary-title">
                 <h4>Geysers El Tatio</h4>
                 <div class="tour-tags">
+                  <span class="badge" style="background:var(--azul-claro);color:var(--azul);border:1px solid #b3d4ef">11/jul (Sáb)</span>
                   <span class="badge badge-orange">Pickup 05:00 · ~7h</span>
                   <span class="badge badge-gray">4.300 m</span>
                 </div>
@@ -977,6 +981,7 @@
             </div>
           </summary>
           <div class="tour-body">
+            <div class="tour-row"><span class="k">Data</span><span class="v">11/jul (Sáb) · pickup 05:00–05:40 · retorno 12:00–12:30</span></div>
             <div class="tour-row"><span class="k">Nível físico</span><span class="v">Moderado</span></div>
             <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, guia bilíngue, entrada no parque</span></div>
             <div class="tour-row"><span class="k">Refeição</span><span class="v">Café quente: ovos, panquecas, queijo, pão, café</span></div>
@@ -996,6 +1001,7 @@
               <div class="tour-summary-title">
                 <h4>Lagos de Altitude + Pedras Vermelhas</h4>
                 <div class="tour-tags">
+                  <span class="badge" style="background:var(--azul-claro);color:var(--azul);border:1px solid #b3d4ef">10/jul (Sex)</span>
                   <span class="badge badge-orange">Pickup 06:00 · ~10h</span>
                   <span class="badge badge-gray">4.200 m</span>
                 </div>
@@ -1010,6 +1016,7 @@
             </div>
           </summary>
           <div class="tour-body">
+            <div class="tour-row"><span class="k">Data</span><span class="v">10/jul (Sex) · pickup 06:00–06:40 · retorno 16:30–17:00</span></div>
             <div class="tour-row"><span class="k">Nível físico</span><span class="v">Moderado (caminhadas curtas)</span></div>
             <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, guia bilíngue, entradas nos parques</span></div>
             <div class="tour-row"><span class="k">Refeição</span><span class="v">Café da manhã + almoço em propriedade familiar com vista para as montanhas</span></div>
@@ -1026,6 +1033,7 @@
               <div class="tour-summary-title">
                 <h4>Laguna Lejía</h4>
                 <div class="tour-tags">
+                  <span class="badge" style="background:var(--azul-claro);color:var(--azul);border:1px solid #b3d4ef">12/jul (Dom)</span>
                   <span class="badge badge-orange">Pickup 06:30 · ~8h</span>
                   <span class="badge badge-green">Baixo impacto</span>
                 </div>
@@ -1040,12 +1048,14 @@
             </div>
           </summary>
           <div class="tour-body">
+            <div class="tour-row"><span class="k">Data</span><span class="v">12/jul (Dom) · pickup 06:30–07:10 · retorno 16:00–16:30</span></div>
             <div class="tour-row"><span class="k">Altitude</span><span class="v">~4.500 m</span></div>
             <div class="tour-row"><span class="k">Nível físico</span><span class="v">Baixo (contemplativo)</span></div>
             <div class="tour-row"><span class="k">Inclui</span><span class="v">Transporte, guia bilíngue experiente</span></div>
             <div class="tour-row"><span class="k">Refeição</span><span class="v">Café da manhã + almoço com massa fresca ao pesto e parmesão</span></div>
             <hr class="tour-divider"/>
             <div class="tour-body-note">⚠️ Estrada não pavimentada &nbsp;·&nbsp; Sensível à atividade vulcânica</div>
+            <div class="tour-body-note">💵 Levar dinheiro em espécie para compras nas tecelãs de Talabre (sem cartão)</div>
           </div>
         </details>
       </div>
@@ -1092,7 +1102,7 @@
       <details class="check-group-details" open>
         <summary>
           <span>⏳</span> Pendentes
-          <span class="check-group-badge">2</span>
+          <span class="check-group-badge">1</span>
           <span class="check-group-chevron">▼</span>
         </summary>
         <div class="check-group-body">
@@ -1101,13 +1111,6 @@
             <div class="check-text">
               <strong>Reservar transporte para Farellones</strong>
               <small>Santiago · Temporada Alta + Férias de Inverno (06–19/jul) — esgota rápido, reservar com antecedência</small>
-            </div>
-          </div>
-          <div class="check-item todo">
-            <span class="check-icon">⏳</span>
-            <div class="check-text">
-              <strong>Definir datas dos passeios no Atacama com a Araya</strong>
-              <small>4 passeios para encaixar entre 09 e 12/jul</small>
             </div>
           </div>
         </div>
@@ -1119,10 +1122,17 @@
       <details class="check-group-details">
         <summary>
           <span>✅</span> Concluído
-          <span class="check-group-badge">6</span>
+          <span class="check-group-badge">7</span>
           <span class="check-group-chevron">▼</span>
         </summary>
         <div class="check-group-body">
+          <div class="check-item done">
+            <span class="check-icon">✅</span>
+            <div class="check-text">
+              <strong>Datas dos passeios Atacama confirmadas — Araya #134756</strong>
+              <small>09/jul Astronômica (pickup 19:31) · 10/jul Lagos & Pedras Vermelhas (pickup 06:00) · 11/jul El Tatio (pickup 05:00) · 12/jul Laguna Lejía (pickup 06:30)</small>
+            </div>
+          </div>
           <div class="check-item done">
             <span class="check-icon">✅</span>
             <div class="check-text">
